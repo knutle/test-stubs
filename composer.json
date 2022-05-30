@@ -2,7 +2,7 @@
     "name": "knutle/test-stubs",
     "description": "Provides simple stub handling for test cases",
     "type": "library",
-    "license": "proprietary",
+    "license": "MIT",
     "authors": [
         {
             "name": "Knut Leborg",
@@ -14,7 +14,8 @@
     "require": {
         "php": "^8.0",
         "symfony/filesystem": "^6.0",
-        "illuminate/support": "^8.0|^9.0"
+        "illuminate/support": "^8.0|^9.0",
+        "symfony/finder": "^6.1"
     },
     "autoload": {
         "psr-4": {
@@ -30,7 +31,8 @@
         "test": "pest"
     },
     "require-dev": {
-        "pestphp/pest": "^1.21"
+        "pestphp/pest": "^1.21",
+        "symfony/var-dumper": "^6.1"
     },
     "config": {
         "allow-plugins": {

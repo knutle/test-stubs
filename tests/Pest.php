@@ -1,5 +1,10 @@
 <?php
 
+use Knutle\TestStubs\InteractsWithStubs;
+use Illuminate\Support\Str;
+use Knutle\TestStubs\HasStubs;
+use Symfony\Component\Filesystem\Path;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -13,6 +18,9 @@
 
 // uses(Tests\TestCase::class)->in('Feature');
 
+#uses(TestCase::class)->in('Unit');
+uses(InteractsWithStubs::class)->in('Unit');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -23,11 +31,6 @@
 | to assert different things. Of course, you may extend the Expectation API at any time.
 |
 */
-
-use Illuminate\Support\Str;
-use Knutle\TestStubs\HasStubs;
-use Knutle\TestStubs\InteractsWithStubs;
-use Symfony\Component\Filesystem\Path;
 
 expect()->extend('toBeOne', function () {
     return $this->toBe(1);
@@ -69,6 +72,6 @@ function stubClassFake(): HasStubs
                 static::$stubsBasePath = null;
             }
         },
-        fn (HasStubs $class) => $class::reset()
+        fn (HasStubs $class) => method_exists($class, 'reset') && $class::reset()
     );
 }
