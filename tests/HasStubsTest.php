@@ -4,8 +4,6 @@ use Knutle\TestStubs\HasStubs;
 use Knutle\TestStubs\InteractsWithStubs;
 
 test('can get stub path with default base path', function () {
-    expect(true)->toBeFalse();
-
     expect((new class() implements HasStubs { use InteractsWithStubs; })->getStubPath('stub-name'))
         ->toEndWith('/test-stubs/src/stubs/stub-name');
 });
