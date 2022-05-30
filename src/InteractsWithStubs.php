@@ -26,10 +26,14 @@ trait InteractsWithStubs
         $dirSegments = explode(DIRECTORY_SEPARATOR, $descendantDir);
 
         while(true) {
-            $path = DIRECTORY_SEPARATOR . Path::join(...[
+            $path = Path::join(...[
                 ...$dirSegments,
                 'stubs',
             ]);
+
+            if(!preg_match("/^\w:/", $path)) {
+                $path = DIRECTORY_SEPARATOR . $path;
+            }
 
             if(is_dir($path)) {
                 return $path;
@@ -48,8 +52,20 @@ trait InteractsWithStubs
         );
 
         if(!is_dir($path)) {
+            // fallback to find the closest parent dir containing a vendor dir
+            // should be fairly likely that is our package base path, and from
+            // there we can look for tests/stubs to use as a fallback
+
+            echo "PARSE FALLBACK: $path\n";
+
+            $packageBase = explode(DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR, $path)[0] ?? null;
+
+            if(is_null($packageBase)) {
+                return $path;
+            }
+
             return Path::join(
-                (explode(DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR, $path)[0] ?? null) ?? $path,
+                 $packageBase,
                 'tests',
                 'stubs'
             );
