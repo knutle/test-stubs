@@ -1,0 +1,39 @@
+{
+    "name": "knutle/test-stubs",
+    "description": "Provides simple stub handling for test cases",
+    "type": "library",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Knut Leborg",
+            "email": "knut@lepa.no"
+        }
+    ],
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^8.0",
+        "symfony/filesystem": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Knutle\\TestStubs\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Knutle\\TestStubs\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "pest"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.21"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

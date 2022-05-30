@@ -1,0 +1,17 @@
+name: laravel package tagged release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    uses: knutle/workflows/.github/workflows/laravel-lib-tagged-release.yml@main
+    with:
+      os: >-
+        [ "ubuntu-latest", "windows-latest" ]
+      php: >-
+        [ "8.0", "8.1" ]
+      laravel: >-
+        [ "8.*", "9.*" ]

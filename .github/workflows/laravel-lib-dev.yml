@@ -1,0 +1,17 @@
+name: laravel package ci dev
+
+on:
+  push:
+    branches:
+      - dev/*
+
+jobs:
+  tests:
+    uses: knutle/workflows/.github/workflows/laravel-lib-dev.yml@main
+    with:
+      os: >-
+        [ "ubuntu-latest", "windows-latest" ]
+      php: >-
+        [ "8.0", "8.1" ]
+      laravel: >-
+        [ "8.*", "9.*" ]
