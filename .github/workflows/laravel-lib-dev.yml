@@ -6,7 +6,7 @@ on:
       - dev/*
 
 jobs:
-  tests:
+  dev:
     uses: knutle/workflows/.github/workflows/laravel-lib-dev.yml@main
     with:
       os: >-

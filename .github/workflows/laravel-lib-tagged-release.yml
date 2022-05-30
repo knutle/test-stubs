@@ -6,7 +6,7 @@ on:
       - "v*"
 
 jobs:
-  release:
+  prod:
     uses: knutle/workflows/.github/workflows/laravel-lib-tagged-release.yml@main
     with:
       os: >-
