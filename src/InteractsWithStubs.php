@@ -26,7 +26,7 @@ trait InteractsWithStubs
         $dirSegments = explode(DIRECTORY_SEPARATOR, $descendantDir);
 
         while(true) {
-            $path = '/' . Path::join(...[
+            $path = DIRECTORY_SEPARATOR . Path::join(...[
                 ...$dirSegments,
                 'stubs',
             ]);
@@ -62,11 +62,15 @@ trait InteractsWithStubs
     {
         $basePath = static::getStubsBasePath();
 
+        if(!is_dir($basePath)) {
+            return [];
+        }
+
         return collect(Finder::create()->files()->ignoreDotFiles(true)->in($basePath)->sortByName())
             ->keys()
             ->map(
                 fn (string $path) => Str::replaceFirst(
-                    '/', '',
+                    DIRECTORY_SEPARATOR, '',
                     Str::replaceFirst(
                         $basePath, '',
                         $path

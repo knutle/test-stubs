@@ -1,6 +1,7 @@
 <?php
 
 use Knutle\TestStubs\Tests\Fakes\FakeStubOwner;
+use Symfony\Component\Filesystem\Path;
 
 test('can list all available stubs', function () {
     expect($this->allStubs()[0])->toEqual('example-stub.txt');
@@ -8,7 +9,9 @@ test('can list all available stubs', function () {
 
 test('can get stub with fallback base path', function () {
     expect($this->getStubPath('example-stub.txt'))
-        ->toEndWith('/test-stubs/tests/stubs/example-stub.txt');
+        ->toEndWith(Path::join(
+            '/test-stubs/tests/stubs/example-stub.txt'
+        ));
 
     expect($this->getStub('example-stub.txt'))
         ->toEqual("example");
@@ -25,7 +28,7 @@ test('can get stub from adjacent stubs dir', function () {
 test('can list stubs recursively', function () {
     expect(FakeStubOwner::allStubs())
         ->toEqual([
-            'more/abc.txt',
+            Path::join('more/abc.txt'),
             'test.txt',
         ]);
 });
