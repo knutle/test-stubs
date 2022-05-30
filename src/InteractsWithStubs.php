@@ -56,6 +56,7 @@ trait InteractsWithStubs
             // should be fairly likely that is our package base path, and from
             // there we can look for tests/stubs to use as a fallback
 
+            echo "DIR SEP: " . DIRECTORY_SEPARATOR . "\n";
             echo "PARSE FALLBACK: $path\n";
 
             $packageBase = explode(DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR, $path)[0] ?? null;
