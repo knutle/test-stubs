@@ -3,7 +3,6 @@
 
 namespace Knutle\TestStubs;
 
-use Illuminate\Support\Str;
 use ReflectionClass;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Finder;
@@ -116,6 +115,7 @@ trait InteractsWithStubs
 
     public static function putStub(string $stubPath, mixed $data): bool
     {
+        dd(static::getStubPath($stubPath));
         return file_put_contents(
             static::getStubPath($stubPath),
             $data

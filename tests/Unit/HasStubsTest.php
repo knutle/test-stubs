@@ -1,7 +1,6 @@
 <?php
 
 use Knutle\TestStubs\Tests\Fakes\FakeStubOwner;
-use Symfony\Component\Filesystem\Path;
 
 test('can list all available stubs', function () {
     expect($this->allStubs()[0])->toEqual('example-stub.txt');
