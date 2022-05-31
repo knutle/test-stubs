@@ -115,7 +115,6 @@ trait InteractsWithStubs
 
     public static function putStub(string $stubPath, mixed $data): bool
     {
-        dd(static::getStubPath($stubPath));
         return file_put_contents(
             static::getStubPath($stubPath),
             $data
