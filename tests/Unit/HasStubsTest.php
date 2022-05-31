@@ -8,18 +8,32 @@ test('can list all available stubs', function () {
 });
 
 test('can get stub with fallback base path', function () {
+    $sep = DIRECTORY_SEPARATOR;
     expect($this->getStubPath('example-stub.txt'))
-        ->toEndWith(Path::join(
-            '/test-stubs/tests/stubs/example-stub.txt'
-        ));
+        ->toEndWith(
+            str_replace(['/', '\\'], DIRECTORY_SEPARATOR, "/test-stubs/tests/stubs/example-stub.txt")
+        );
 
     expect($this->getStub('example-stub.txt'))
         ->toEqual("example");
 });
 
+test('can use custom directory separator when outputting paths', function () {
+    FakeStubOwner::$directorySeparator = "\\";
+
+    expect(FakeStubOwner::getStubPath('test.txt'))
+        ->toEndWith(
+            '\\test-stubs\\tests\\Fakes\\stubs\\test.txt'
+        );
+
+    FakeStubOwner::$directorySeparator = DIRECTORY_SEPARATOR;
+});
+
 test('can get stub from adjacent stubs dir', function () {
     expect(FakeStubOwner::getStubPath('test.txt'))
-        ->toEndWith('/test-stubs/tests/Fakes/stubs/test.txt');
+        ->toEndWith(
+            str_replace(['/', '\\'], DIRECTORY_SEPARATOR, '/test-stubs/tests/Fakes/stubs/test.txt')
+        );
 
     expect(FakeStubOwner::getStub('test.txt'))
         ->toEqual('testing one two');
@@ -28,14 +42,28 @@ test('can get stub from adjacent stubs dir', function () {
 test('can list stubs recursively', function () {
     expect(FakeStubOwner::allStubs())
         ->toEqual([
-            Path::join('more/abc.txt'),
+            'more/abc.txt',
             'test.txt',
         ]);
 });
 
+test('can list stubs with normalized relative paths even when using backslash as directory separator', function () {
+    FakeStubOwner::$directorySeparator = "\\";
+
+    expect(FakeStubOwner::allStubs())
+        ->toEqual([
+            'more/abc.txt',
+            'test.txt',
+        ]);
+
+    FakeStubOwner::$directorySeparator = DIRECTORY_SEPARATOR;
+});
+
 test('can get stub path with temp base path', function () {
     expect(stubClassFake()->getStubPath('test'))
-        ->toEndWith('/tests/stubs/test');
+        ->toEndWith(
+            str_replace(['/', '\\'], DIRECTORY_SEPARATOR, '/tests/stubs/test')
+        );
 });
 
 test('can get stub contents with temp base path', function () {

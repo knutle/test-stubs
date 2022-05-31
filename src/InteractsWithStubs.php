@@ -11,6 +11,8 @@ use Throwable;
 
 trait InteractsWithStubs
 {
+    public static string $directorySeparator = DIRECTORY_SEPARATOR;
+
     protected static function getStubsBasePath(): string
     {
         if(str_starts_with(static::class, "P\\")) {
@@ -23,7 +25,7 @@ trait InteractsWithStubs
 
         $descendantDir = dirname($filename);
 
-        $dirSegments = explode(DIRECTORY_SEPARATOR, $descendantDir);
+        $dirSegments = explode('/', Path::normalize($descendantDir));
 
         while(true) {
             $path = Path::join(...[
@@ -31,8 +33,8 @@ trait InteractsWithStubs
                 'stubs',
             ]);
 
-            if(!preg_match("/^\w:/", $path)) {
-                $path = DIRECTORY_SEPARATOR . $path;
+            if(!Path::isAbsolute($path)) {
+                $path = Path::makeAbsolute($path, '/');
             }
 
             if(is_dir($path)) {
@@ -56,10 +58,7 @@ trait InteractsWithStubs
             // should be fairly likely that is our package base path, and from
             // there we can look for tests/stubs to use as a fallback
 
-            echo "DIR SEP: " . DIRECTORY_SEPARATOR . "\n";
-            echo "PARSE FALLBACK: $path\n";
-
-            $packageBase = explode(DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR, $path)[0] ?? null;
+            $packageBase = explode('/vendor/', $path)[0] ?? null;
 
             if(is_null($packageBase)) {
                 return $path;
@@ -86,22 +85,22 @@ trait InteractsWithStubs
         return collect(Finder::create()->files()->ignoreDotFiles(true)->in($basePath)->sortByName())
             ->keys()
             ->map(
-                fn (string $path) => Str::replaceFirst(
-                    DIRECTORY_SEPARATOR, '',
-                    Str::replaceFirst(
-                        $basePath, '',
-                        $path
-                    )
-                )
+                fn (string $path) => Path::makeRelative($path, $basePath)
             )->toArray();
     }
 
     public static function getStubPath(string $stubPath): string
     {
-        return Path::join(
+        $path = Path::join(
             static::getStubsBasePath(),
             $stubPath
         );
+
+        if(!str_contains($path, static::$directorySeparator)) {
+            $path = str_replace('/', static::$directorySeparator, $path);
+        }
+
+        return $path;
     }
 
     public static function getStub(string $stubPath): bool|string
