@@ -58,7 +58,7 @@ test('can list stubs with normalized relative paths even when using backslash as
 });
 
 test('can get stub path with temp base path', function () {
-    expect(stubClassFake()->getStubPath('test'))
+    expect(stubClassFake()::getStubPath('test'))
         ->toEndWith(
             str_replace(['/', '\\'], DIRECTORY_SEPARATOR, '/tests/stubs/test')
         );
@@ -67,20 +67,20 @@ test('can get stub path with temp base path', function () {
 test('can get stub contents with temp base path', function () {
     $class = stubClassFake();
 
-    expect($class->putStub('test', 'test stub contents'))
+    expect($class::putStub('test', 'test stub contents'))
         ->toBeTrue()
-        ->and($class->getStub('test'))
+        ->and($class::getStub('test'))
         ->toBe('test stub contents');
 });
 
 test('can return false when no stub contents found', function () {
     $class = stubClassFake();
 
-    expect($class->getStub('test'))
+    expect($class::getStub('test'))
         ->toBeFalse()
-        ->and($class->putStub('test', 'test stub contents'))
+        ->and($class::putStub('test', 'test stub contents'))
         ->toBeTrue()
-        ->and($class->getStub('test'))
+        ->and($class::getStub('test'))
         ->toBeTruthy();
 });
 
