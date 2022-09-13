@@ -84,3 +84,30 @@ test('can return false when no stub contents found', function () {
         ->toBeTruthy();
 });
 
+test('can create parent dir recursively when putting stub contents', function () {
+    $class = stubClassFake();
+
+    $stubName = 'put-recursive-test/'.time().'/test.txt';
+
+    expect($class::hasStub($stubName))
+        ->toBeFalse()
+        ->and($class::putStub($stubName, 'test recursive stub contents'))
+        ->toBeTrue()
+        ->and($class::getStub($stubName))
+        ->toBe('test recursive stub contents')
+        ->and($class::hasStub($stubName))
+        ->toBeTrue();
+});
+
+test('can get and put json stubs', function () {
+    $class = stubClassFake();
+
+    expect($class::putJsonStub('test-json.json', ['test' => 'hello']))
+        ->toBeTrue()
+        ->and($class::getJsonStub('test-json.json'))
+        ->toBe(['test' => 'hello'])
+        ->and($class::putJsonStub('test-json.json', '{"test2": "hei"}'))
+        ->toBeTrue()
+        ->and($class::getJsonStub('test-json.json'))
+        ->toBe(['test2' => 'hei']);
+});

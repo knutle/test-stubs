@@ -7,6 +7,12 @@ use ReflectionClass;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Finder;
 use Throwable;
+use function dirname;
+use function file_exists;
+use function json_decode;
+use function json_encode;
+use function mkdir;
+use const JSON_PRETTY_PRINT;
 
 trait InteractsWithStubs
 {
@@ -126,5 +132,23 @@ trait InteractsWithStubs
             $stubFilePath,
             $data
         ) !== false;
+    }
+
+    public static function hasStub(string $stubPath): bool
+    {
+        return file_exists(static::getStubPath($stubPath));
+    }
+
+    public static function getJsonStub(string $stubPath): array
+    {
+        return json_decode(
+            static::getStub($stubPath),
+            associative: true
+        );
+    }
+
+    public static function putJsonStub(string $stubPath, mixed $data): bool|string
+    {
+        return static::putStub($stubPath, is_string($data) ? $data : json_encode($data, JSON_PRETTY_PRINT));
     }
 }
