@@ -7,14 +7,13 @@ test('can list all available stubs', function () {
 });
 
 test('can get stub with fallback base path', function () {
-    $sep = DIRECTORY_SEPARATOR;
     expect($this->getStubPath('example-stub.txt'))
         ->toEndWith(
-            str_replace(['/', '\\'], DIRECTORY_SEPARATOR, "/test-stubs/tests/stubs/example-stub.txt")
-        );
-
-    expect($this->getStub('example-stub.txt'))
+            str_replace([ '/', '\\' ], DIRECTORY_SEPARATOR, "/test-stubs/tests/stubs/example-stub.txt")
+        )
+        ->and($this->getStub('example-stub.txt'))
         ->toEqual("example");
+
 });
 
 test('can use custom directory separator when outputting paths', function () {
@@ -31,11 +30,11 @@ test('can use custom directory separator when outputting paths', function () {
 test('can get stub from adjacent stubs dir', function () {
     expect(FakeStubOwner::getStubPath('test.txt'))
         ->toEndWith(
-            str_replace(['/', '\\'], DIRECTORY_SEPARATOR, '/test-stubs/tests/Fakes/stubs/test.txt')
-        );
-
-    expect(FakeStubOwner::getStub('test.txt'))
+            str_replace([ '/', '\\' ], DIRECTORY_SEPARATOR, '/test-stubs/tests/Fakes/stubs/test.txt')
+        )
+        ->and(FakeStubOwner::getStub('test.txt'))
         ->toEqual('testing one two');
+
 });
 
 test('can list stubs recursively', function () {
@@ -68,14 +67,20 @@ test('can get stub path with temp base path', function () {
 test('can get stub contents with temp base path', function () {
     $class = stubClassFake();
 
-    expect($class->putStub('test', 'test stub contents'))->toBeTrue();
-    expect($class->getStub('test'))->toBe('test stub contents');
+    expect($class->putStub('test', 'test stub contents'))
+        ->toBeTrue()
+        ->and($class->getStub('test'))
+        ->toBe('test stub contents');
 });
 
 test('can return false when no stub contents found', function () {
     $class = stubClassFake();
 
-    expect($class->getStub('test'))->toBeFalse();
-    expect($class->putStub('test', 'test stub contents'))->toBeTrue();
-    expect($class->getStub('test'))->toBeTruthy();
+    expect($class->getStub('test'))
+        ->toBeFalse()
+        ->and($class->putStub('test', 'test stub contents'))
+        ->toBeTrue()
+        ->and($class->getStub('test'))
+        ->toBeTruthy();
 });
+

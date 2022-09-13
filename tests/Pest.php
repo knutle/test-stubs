@@ -16,9 +16,6 @@ use Symfony\Component\Filesystem\Path;
 |
 */
 
-// uses(Tests\TestCase::class)->in('Feature');
-
-#uses(TestCase::class)->in('Unit');
 uses(InteractsWithStubs::class)->in('Unit');
 
 /*
