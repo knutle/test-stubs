@@ -10,7 +10,7 @@ jobs:
     uses: knutle/workflows/.github/workflows/laravel-lib-tagged-release.yml@main
     with:
       os: >-
-        [ "ubuntu-latest", "windows-latest" ]
+        [ "ubuntu-latest" ]
       php: >-
         [ "8.1" ]
       laravel: >-
