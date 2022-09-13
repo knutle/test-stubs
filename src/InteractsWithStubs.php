@@ -115,8 +115,15 @@ trait InteractsWithStubs
 
     public static function putStub(string $stubPath, mixed $data): bool
     {
+        $stubFilePath = static::getStubPath($stubPath);
+        $stubDirPath = dirname($stubFilePath);
+
+        if(!file_exists($stubDirPath)) {
+            mkdir($stubDirPath, recursive: true);
+        }
+
         return file_put_contents(
-            static::getStubPath($stubPath),
+            $stubFilePath,
             $data
         ) !== false;
     }
