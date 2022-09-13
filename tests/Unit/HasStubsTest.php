@@ -2,20 +2,6 @@
 
 use Knutle\TestStubs\Tests\Fakes\FakeStubOwner;
 
-test('can list all available stubs', function () {
-    expect($this->allStubs()[0])->toEqual('example-stub.txt');
-});
-
-test('can get stub with fallback base path', function () {
-    expect($this->getStubPath('example-stub.txt'))
-        ->toEndWith(
-            str_replace([ '/', '\\' ], DIRECTORY_SEPARATOR, "/test-stubs/tests/stubs/example-stub.txt")
-        )
-        ->and($this->getStub('example-stub.txt'))
-        ->toEqual("example");
-
-});
-
 test('can use custom directory separator when outputting paths', function () {
     FakeStubOwner::$directorySeparator = "\\";
 
@@ -73,17 +59,6 @@ test('can get stub contents with temp base path', function () {
         ->toBe('test stub contents');
 });
 
-test('can return false when no stub contents found', function () {
-    $class = stubClassFake();
-
-    expect($class::getStub('test'))
-        ->toBeFalse()
-        ->and($class::putStub('test', 'test stub contents'))
-        ->toBeTrue()
-        ->and($class::getStub('test'))
-        ->toBeTruthy();
-});
-
 test('can create parent dir recursively when putting stub contents', function () {
     $class = stubClassFake();
 
@@ -110,4 +85,13 @@ test('can get and put json stubs', function () {
         ->toBeTrue()
         ->and($class::getJsonStub('test-json.json'))
         ->toBe(['test2' => 'hei']);
+});
+
+test('will return default value if stub file not found', function () {
+    $class = stubClassFake();
+
+    expect($class::getStub('not-found'))
+        ->toEqual('')
+        ->and($class::getJsonStub('not-found'))
+        ->toEqual([]);
 });

@@ -3,3 +3,4 @@
 .DS_Store
 .phpunit.cache
 /.idea/
+/tests/stubs/ignore

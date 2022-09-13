@@ -108,14 +108,14 @@ trait InteractsWithStubs
         return $path;
     }
 
-    public static function getStub(string $stubPath): bool|string
+    public static function getStub(string $stubPath): string
     {
         try {
             return file_get_contents(
                 static::getStubPath($stubPath)
             );
         } catch (Throwable) {
-            return false;
+            return '';
         }
     }
 
@@ -144,10 +144,10 @@ trait InteractsWithStubs
         return json_decode(
             static::getStub($stubPath),
             associative: true
-        );
+        ) ?? [];
     }
 
-    public static function putJsonStub(string $stubPath, mixed $data): bool|string
+    public static function putJsonStub(string $stubPath, mixed $data): bool
     {
         return static::putStub($stubPath, is_string($data) ? $data : json_encode($data, JSON_PRETTY_PRINT));
     }

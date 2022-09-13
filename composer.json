@@ -20,7 +20,10 @@
     "autoload": {
         "psr-4": {
             "Knutle\\TestStubs\\": "src/"
-        }
+        },
+      "files": [
+        "bootstrap/PestPlugin.php"
+      ]
     },
     "autoload-dev": {
         "psr-4": {
